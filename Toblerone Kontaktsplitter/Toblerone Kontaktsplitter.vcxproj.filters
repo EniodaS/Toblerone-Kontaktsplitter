@@ -29,6 +29,15 @@
     <ClInclude Include="Form1.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Parser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Service.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DataClass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CppCLR_WinFormsProject.cpp">
@@ -41,6 +50,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Form1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Parser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Service.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DataClass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
