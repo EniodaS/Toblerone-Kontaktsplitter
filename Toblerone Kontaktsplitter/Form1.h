@@ -1,5 +1,6 @@
 #pragma once
-#include "Parser.h"
+#include "UiService.h"
+
 
 namespace CppCLRWinFormsProject {
 
@@ -9,19 +10,31 @@ namespace CppCLRWinFormsProject {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+	using namespace System::Diagnostics; 
+	using namespace System::Collections::Generic;
 
 	/// <summary>
 	/// Summary for Form1
 	/// </summary>
 	public ref class Form1 : public System::Windows::Forms::Form
 	{
+
+
+	private: System::Windows::Forms::TextBox^ GeschlechtsFeld;
+	private: System::Windows::Forms::Label^ GeschlechtsLabel;
+
+	private:
+		DataClass^ dataClass;
+		UiService^ uiService;
+
 	public:
+	
+		  
 		Form1(void)
 		{
 			InitializeComponent();
-			//
-			//TODO: Add the constructor code here
-			//
+			 dataClass = gcnew DataClass();
+			 uiService = gcnew UiService(dataClass);
 		}
 
 	protected:
@@ -35,6 +48,7 @@ namespace CppCLRWinFormsProject {
 				delete components;
 			}
 		}
+
 	private: System::Windows::Forms::TextBox^ EingabeFeld;
 	private: System::Windows::Forms::Button^ ScanButton;
 	private: System::Windows::Forms::Button^ SaveButton;
@@ -59,14 +73,7 @@ namespace CppCLRWinFormsProject {
 	private: System::Windows::Forms::Button^ generateButton;
 
 
-	protected:
 
-	protected:
-
-	protected:
-
-
-	protected:
 
 	private:
 		/// <summary>
@@ -98,6 +105,8 @@ namespace CppCLRWinFormsProject {
 			this->AusgabeFeld = (gcnew System::Windows::Forms::TextBox());
 			this->AusgabeLabel = (gcnew System::Windows::Forms::Label());
 			this->generateButton = (gcnew System::Windows::Forms::Button());
+			this->GeschlechtsFeld = (gcnew System::Windows::Forms::TextBox());
+			this->GeschlechtsLabel = (gcnew System::Windows::Forms::Label());
 			this->SuspendLayout();
 			// 
 			// EingabeFeld
@@ -246,11 +255,29 @@ namespace CppCLRWinFormsProject {
 			this->generateButton->UseVisualStyleBackColor = true;
 			this->generateButton->Click += gcnew System::EventHandler(this, &Form1::button1_Click_1);
 			// 
+			// GeschlechtsFeld
+			// 
+			this->GeschlechtsFeld->Location = System::Drawing::Point(183, 121);
+			this->GeschlechtsFeld->Name = L"GeschlechtsFeld";
+			this->GeschlechtsFeld->Size = System::Drawing::Size(129, 20);
+			this->GeschlechtsFeld->TabIndex = 17;
+			// 
+			// GeschlechtsLabel
+			// 
+			this->GeschlechtsLabel->AutoSize = true;
+			this->GeschlechtsLabel->Location = System::Drawing::Point(181, 144);
+			this->GeschlechtsLabel->Name = L"GeschlechtsLabel";
+			this->GeschlechtsLabel->Size = System::Drawing::Size(61, 13);
+			this->GeschlechtsLabel->TabIndex = 18;
+			this->GeschlechtsLabel->Text = L"Geschlecht";
+			// 
 			// Form1
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(501, 516);
+			this->Controls->Add(this->GeschlechtsLabel);
+			this->Controls->Add(this->GeschlechtsFeld);
 			this->Controls->Add(this->generateButton);
 			this->Controls->Add(this->AusgabeLabel);
 			this->Controls->Add(this->AusgabeFeld);
@@ -277,7 +304,14 @@ namespace CppCLRWinFormsProject {
 #pragma endregion
 	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
 		String^ eingabe = EingabeFeld->Text;
-
+		uiService->scan(eingabe);
+		AnredeFeld->Text = uiService->getParser()->getAnrede();
+		GeschlechtsFeld->Text = uiService->getParser()->getGeschlecht();
+		TitelFeld1->Text = uiService->getParser()->getTitel1();
+		TitelFeld2->Text = uiService->getParser()->getTitel2();
+		VornameFeld->Text = uiService->getParser()->getVorname();
+		NachnameFeld->Text = uiService->getParser()->getNachname();
+		
 		
 	}
 	private: System::Void textBox1_TextChanged(System::Object^ sender, System::EventArgs^ e) {

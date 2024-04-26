@@ -1,6 +1,10 @@
 #include "pch.h"
 #include "DataClass.h"
 
+using namespace System;
+using namespace System::Diagnostics;
+using namespace System::Collections::Generic;
+
 DataClass::DataClass()
 {
 	listeAnrede = gcnew List<String^>();
@@ -8,20 +12,20 @@ DataClass::DataClass()
 	listeAnrede->Add("Frau");
 	listeAnrede->Add("X");
 	listeBriefAnrede = gcnew List<String^>();
-	listeAnrede->Add("Sehr geehrter");
-	listeAnrede->Add("Sehr geehrte");
-	listeAnrede->Add("Sehr geehrte*r");
+	listeBriefAnrede->Add("Sehr geehrter");
+	listeBriefAnrede->Add("Sehr geehrte");
+	listeBriefAnrede->Add("Sehr geehrte*r");
 	listeTitel = gcnew List<String^>();
-	listeAnrede->Add("Dr.");
-	listeAnrede->Add("Prof.");
+	listeTitel->Add("Dr.");
+	listeTitel->Add("Prof.");
 	listeGeschlecht = gcnew List<String^>();
-	listeAnrede->Add("männlich");
-	listeAnrede->Add("weiblich");
-	listeAnrede->Add("divers");
+	listeGeschlecht->Add("männlich");
+	listeGeschlecht->Add("weiblich");
+	listeGeschlecht->Add("divers");
 	listeNachnamenZusatz = gcnew List<String^>();
-	listeAnrede->Add("van");
-	listeAnrede->Add("de");
-	listeAnrede->Add("hof");
+	listeNachnamenZusatz->Add("van");
+	listeNachnamenZusatz->Add("de");
+	listeNachnamenZusatz->Add("hof");
 
 
 }

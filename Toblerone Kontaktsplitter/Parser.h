@@ -1,35 +1,41 @@
 #pragma once
-
-using namespace System;
-using namespace System::Diagnostics; // nur für debug zwecke
-using namespace System::Collections::Generic;
-
 #include "DataClass.h"
+
 
 ref class Parser
 {
 private:
 
 	// Variabeln aus denen die Ausgabe generiert wird
-	String^ anrede;
-	String^ titel1;
-	String^ titel2;
-	String^ vorname;
-	String^ nachname;
+	System::String^ anrede = "";
+	System::String^ titel1 = "";
+	System::String^ titel2 = "";
+	System::String^ vorname = "";
+	System::String^ nachname = "";
+	System::String^ geschlecht = "";
+	System::String^ briefAnrede = "";
 
 
 	// Hilfsdaten für das Parsen
-	List<String^>^ listeBriefAnrede; 
-	List<String^>^ listeAnrede;
-	List<String^>^ listeTitel;
-	List<String^>^ listeGeschlecht;
-	List<String^>^ listeNachnamenZusatz;
+	System::Collections::Generic::List<System::String^>^ listeBriefAnrede;
+	System::Collections::Generic::List<System::String^>^ listeAnrede;
+	System::Collections::Generic::List<System::String^>^ listeTitel;
+	System::Collections::Generic::List<System::String^>^ listeGeschlecht;
+	System::Collections::Generic::List<System::String^>^ listeNachnamenZusatz;
 
 public:
 
-	Parser(DataClass dataClass);
+	Parser(DataClass^ dataClass);
 
-	void parseEingabe(String^ eingabeString);
+	void parseEingabe(System::String^ eingabeString);
+
+	System::String^ getAnrede();
+	System::String^ getTitel1();
+	System::String^ getTitel2();
+	System::String^ getVorname();
+	System::String^ getNachname();
+	System::String^ getGeschlecht();
+	System::String^ getBriefAnrede();
 
 };
 

@@ -32,10 +32,10 @@
     <ClInclude Include="Parser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Service.h">
+    <ClInclude Include="DataClass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DataClass.h">
+    <ClInclude Include="UiService.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -55,10 +55,10 @@
     <ClCompile Include="Parser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Service.cpp">
+    <ClCompile Include="DataClass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DataClass.cpp">
+    <ClCompile Include="UiService.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

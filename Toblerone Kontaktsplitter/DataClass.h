@@ -1,26 +1,23 @@
 #pragma once
-using namespace System;
-using namespace System::Diagnostics; // nur für debug zwecke
-using namespace System::Collections::Generic;
 
 
 ref class DataClass
 {
 
 private:
-	List<String^>^ listeAnrede;
-	List<String^>^ listeBriefAnrede;
-	List<String^>^ listeTitel;
-	List<String^>^ listeGeschlecht;
-	List<String^>^ listeNachnamenZusatz;
+	System::Collections::Generic::List<System::String^>^ listeAnrede;
+	System::Collections::Generic::List<System::String^>^ listeBriefAnrede;
+	System::Collections::Generic::List<System::String^>^ listeTitel;
+	System::Collections::Generic::List<System::String^>^ listeGeschlecht;
+	System::Collections::Generic::List<System::String^>^ listeNachnamenZusatz;
 
 public:
 
 	DataClass();
-	List<String^>^ getAnrede();
-	List<String^>^ getBriefAnrede();
-	List<String^>^ getTitel();
-	List<String^>^ getGeschlecht();
-	List<String^>^ getNachnamen();
+	System::Collections::Generic::List<System::String^>^ getAnrede();
+	System::Collections::Generic::List<System::String^>^ getBriefAnrede();
+	System::Collections::Generic::List<System::String^>^ getTitel();
+	System::Collections::Generic::List<System::String^>^ getGeschlecht();
+	System::Collections::Generic::List<System::String^>^ getNachnamen();
 };
 
