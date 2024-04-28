@@ -125,7 +125,7 @@ namespace CppCLRWinFormsProject {
 			this->ScanButton->TabIndex = 1;
 			this->ScanButton->Text = L"Eingabe scannen";
 			this->ScanButton->UseVisualStyleBackColor = true;
-			this->ScanButton->Click += gcnew System::EventHandler(this, &Form1::button1_Click);
+			this->ScanButton->Click += gcnew System::EventHandler(this, &Form1::ScanButton_Click);
 			// 
 			// SaveButton
 			// 
@@ -253,7 +253,7 @@ namespace CppCLRWinFormsProject {
 			this->generateButton->TabIndex = 16;
 			this->generateButton->Text = L"Aktualisieren";
 			this->generateButton->UseVisualStyleBackColor = true;
-			this->generateButton->Click += gcnew System::EventHandler(this, &Form1::button1_Click_1);
+			this->generateButton->Click += gcnew System::EventHandler(this, &Form1::generateButton_Click);
 			// 
 			// GeschlechtsFeld
 			// 
@@ -302,18 +302,7 @@ namespace CppCLRWinFormsProject {
 
 		}
 #pragma endregion
-	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
-		String^ eingabe = EingabeFeld->Text;
-		uiService->scan(eingabe);
-		AnredeFeld->Text = uiService->getParser()->getAnrede();
-		GeschlechtsFeld->Text = uiService->getParser()->getGeschlecht();
-		TitelFeld1->Text = uiService->getParser()->getTitel1();
-		TitelFeld2->Text = uiService->getParser()->getTitel2();
-		VornameFeld->Text = uiService->getParser()->getVorname();
-		NachnameFeld->Text = uiService->getParser()->getNachname();
-		
-		
-	}
+
 	private: System::Void textBox1_TextChanged(System::Object^ sender, System::EventArgs^ e) {
 	}
 	private: System::Void textBox3_TextChanged(System::Object^ sender, System::EventArgs^ e) {
@@ -324,7 +313,35 @@ private: System::Void textBox5_TextChanged(System::Object^ sender, System::Event
 }
 private: System::Void SaveButton_Click(System::Object^ sender, System::EventArgs^ e) {
 }
-private: System::Void button1_Click_1(System::Object^ sender, System::EventArgs^ e) {
+
+
+private: System::Void ScanButton_Click(System::Object^ sender, System::EventArgs^ e) {
+	String^ eingabe = EingabeFeld->Text;
+	uiService->scan(eingabe);
+	AnredeFeld->Text = uiService->getParser()->getAnrede();
+	GeschlechtsFeld->Text = uiService->getParser()->getGeschlecht();
+	TitelFeld1->Text = uiService->getParser()->getTitel1();
+	TitelFeld2->Text = uiService->getParser()->getTitel2();
+	VornameFeld->Text = uiService->getParser()->getVorname();
+	NachnameFeld->Text = uiService->getParser()->getNachname();
+
+	AusgabeFeld->Text = uiService->getParser()->getAusgabe();
 }
+
+private: System::Void generateButton_Click(System::Object^ sender, System::EventArgs^ e) {
+
+	uiService->getParser()->setAnrede(AnredeFeld->Text + " ");
+	uiService->getParser()->setGeschlecht(GeschlechtsFeld->Text);
+	uiService->getParser()->setTitel1(TitelFeld1->Text + " ");
+	uiService->getParser()->setTitel2(TitelFeld2->Text + " ");
+	uiService->getParser()->setVorname(VornameFeld->Text + " ");
+	uiService->getParser()->setNachname(NachnameFeld->Text + " ");
+
+	uiService->getParser()->generiereAusgabe();
+
+	AusgabeFeld->Text = uiService->getParser()->getAusgabe();
+
+}
+
 };
 }

@@ -23,12 +23,16 @@ private:
 	System::Collections::Generic::List<System::String^>^ listeGeschlecht;
 	System::Collections::Generic::List<System::String^>^ listeNachnamenZusatz;
 
+	System::String^ ausgabe = "";
+
 public:
 
 	Parser(DataClass^ dataClass);
 
 	void parseEingabe(System::String^ eingabeString);
+	void generiereAusgabe();
 
+	//get Methoden
 	System::String^ getAnrede();
 	System::String^ getTitel1();
 	System::String^ getTitel2();
@@ -36,6 +40,19 @@ public:
 	System::String^ getNachname();
 	System::String^ getGeschlecht();
 	System::String^ getBriefAnrede();
+	System::String^ getAusgabe();
+
+	//set Methoden
+	void setAnrede(System::String^ eingabe);
+	void setTitel1(System::String^ eingabe);
+	void setTitel2(System::String^ eingabe);
+	void setVorname(System::String^ eingabe);
+	void setNachname(System::String^ eingabe);
+	void setGeschlecht(System::String^ eingabe);
+	void setBriefAnrede(System::String^ eingabe);
+
+
+
 
 };
 

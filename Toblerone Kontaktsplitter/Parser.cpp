@@ -32,10 +32,12 @@ void Parser::parseEingabe(String^ eingabeString)
     geschlecht = "";
     briefAnrede = "";
 
+    //trenne eingabe in Liste an wörtern
     List<String^>^ worte = gcnew List<String^>(eingabeString->Split(' '));
-
     int notFoundCount = 0;
 
+
+    //vergleiche gefundene Wörter mit Hilfslisten
     for each (String^ wort in worte) {
         Debug::WriteLine(wort);
 
@@ -46,18 +48,18 @@ void Parser::parseEingabe(String^ eingabeString)
             if (wort == item) {
                 found = true;
                 Debug::WriteLine(item + "found in listeAnrede");
-                anrede = item;
+                anrede = item + " ";
 
                 if (wort == "Herr")
                 {
                     geschlecht = "Männlich";
-                    briefAnrede = "Sehr geehrter";
+                    briefAnrede = "Sehr geehrter ";
                 }
                 else
                 if (wort == "Frau")
                 {
                     geschlecht = "Weiblich";
-                    briefAnrede = "Sehr geehrte";
+                    briefAnrede = "Sehr geehrte ";
                 }
 
             }
@@ -69,10 +71,10 @@ void Parser::parseEingabe(String^ eingabeString)
                 Debug::WriteLine(item + " found in listeTitel");
                 if (titel1 == "") 
                 {
-                    titel1 = item;
+                    titel1 = item + " ";
                 }
                 else {
-                    titel2 = item;
+                    titel2 = item + " ";
                 }
 
             }
@@ -82,7 +84,7 @@ void Parser::parseEingabe(String^ eingabeString)
             if (wort == item) {
                 found = true;
                 Debug::WriteLine(item + " found in listeNachnamenZusatz");
-                nachname += item;
+                nachname += item + " ";
 
             }
         }
@@ -92,17 +94,30 @@ void Parser::parseEingabe(String^ eingabeString)
             Debug::WriteLine(wort + " not found in any list");
             if (notFoundCount == 0)
             {
-                vorname = wort;
-                notFoundCount++;
+                vorname = wort + " ";
+
             }
             else
             {
-                nachname = wort;
+                nachname = wort + " ";
                 notFoundCount++;
             }
 
         }
     }
+
+    generiereAusgabe();
+
+}
+
+void Parser::generiereAusgabe()
+{
+    if (briefAnrede == "")
+    {
+        briefAnrede = "Sehr geehrte(r)* ";
+    }
+
+    ausgabe = briefAnrede + anrede + titel1 + titel2 + vorname + nachname;
 }
 
 System::String^ Parser::getAnrede()
@@ -139,3 +154,46 @@ System::String^ Parser::getBriefAnrede()
 {
     return briefAnrede;
 }
+
+System::String^ Parser::getAusgabe()
+{
+    return ausgabe;
+}
+
+void Parser::setAnrede(System::String^ eingabe)
+{
+    anrede = eingabe;
+}
+
+void Parser::setTitel1(System::String^ eingabe)
+{
+    titel1 = eingabe;
+}
+
+void Parser::setTitel2(System::String^ eingabe)
+{
+    titel2 = eingabe;
+}
+
+void Parser::setVorname(System::String^ eingabe)
+{
+    vorname = eingabe;
+}
+
+void Parser::setNachname(System::String^ eingabe)
+{
+    nachname = eingabe;
+}
+
+void Parser::setGeschlecht(System::String^ eingabe)
+{
+    geschlecht = eingabe;
+}
+
+void Parser::setBriefAnrede(System::String^ eingabe)
+{
+    briefAnrede = eingabe;
+}
+
+
+
