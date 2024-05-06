@@ -31,5 +31,10 @@ void UiService::update()
 
 void UiService::save()
 {
+	this->kontakt = gcnew Kontakt(parser->getAnrede(), parser->getTitel1(), parser->getTitel2(), parser->getVorname(), parser->getNachname(), parser->getGeschlecht(), parser->getBriefAnrede());
+}
 
+Kontakt^ UiService::getKontakt()
+{
+	return kontakt;
 }

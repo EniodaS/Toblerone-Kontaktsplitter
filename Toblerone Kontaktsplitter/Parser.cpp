@@ -117,7 +117,7 @@ void Parser::generiereAusgabe()
         briefAnrede = "Sehr geehrte(r)* ";
     }
 
-    ausgabe = briefAnrede + anrede + titel1 + titel2 + vorname + nachname;
+    ausgabe = briefAnrede + anrede + titel1 + titel2 + vo////rname + nachname;
 }
 
 System::String^ Parser::getAnrede()

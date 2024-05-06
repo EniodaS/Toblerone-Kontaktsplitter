@@ -1,12 +1,14 @@
 #pragma once
 #include "Parser.h"
+#include "Kontakt.h"
 
 
-ref class UiService
+public ref class UiService
 {
 private:
 	Parser^ parser;
 	DataClass^ dataClass;
+	Kontakt^ kontakt;
 
 public:
 
@@ -19,6 +21,8 @@ public:
 	void update();
 
 	void save();
+
+	Kontakt^ getKontakt();
 
 };
 

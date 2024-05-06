@@ -1,7 +1,7 @@
 #pragma once
 
 
-ref class DataClass
+public ref class DataClass
 {
 
 private:

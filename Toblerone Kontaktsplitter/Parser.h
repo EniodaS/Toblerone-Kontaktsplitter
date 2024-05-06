@@ -2,7 +2,7 @@
 #include "DataClass.h"
 
 
-ref class Parser
+public ref class Parser
 {
 private:
 
