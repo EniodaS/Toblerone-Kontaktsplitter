@@ -19,7 +19,13 @@ DataClass::DataClass()
 
 	listeTitel = gcnew List<String^>();
 	listeTitel->Add("Dr.");
+	listeTitel->Add("Doktor");
 	listeTitel->Add("Prof.");
+	listeTitel->Add("Professor");
+	listeTitel->Add("Dipl.");
+	listeTitel->Add("Ing.");
+	listeTitel->Add("Dr.-Ing.");
+	// TODO: add more, Quellenangaben bei Listen aus dem Internet!
 
 	listeGeschlecht = gcnew List<String^>(); // TODO useless?
 	listeGeschlecht->Add("männlich");
@@ -27,11 +33,13 @@ DataClass::DataClass()
 	listeGeschlecht->Add("divers");
 
 	listeNachnamenZusatz = gcnew List<String^>();
+	listeNachnamenZusatz->Add("von");
+	listeNachnamenZusatz->Add("vom");
 	listeNachnamenZusatz->Add("van");
 	listeNachnamenZusatz->Add("de");
-	listeNachnamenZusatz->Add("hof");
-
-
+	listeNachnamenZusatz->Add("der");
+	listeNachnamenZusatz->Add("hof"); // ???
+	// TODO: add more, Quellenangaben bei Listen aus dem Internet!
 }
 
 List<String^>^ DataClass::getAnrede()

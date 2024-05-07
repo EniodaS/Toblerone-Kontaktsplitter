@@ -4,8 +4,7 @@
 #include <string>        
 #include <vector>        
 #include <sstream>       
-#include <msclr/marshal_cppstd.h> 
-
+#include <msclr/marshal_cppstd.h>
 
 using namespace System;
 using namespace System::Collections::Generic;
@@ -13,10 +12,10 @@ using namespace System::Diagnostics;
 
 Parser::Parser(DataClass^ dataClass)
 {
-	listeAnrede = dataClass->getAnrede();
-	listeBriefAnrede = dataClass->getBriefAnrede();
+	// listeAnrede = dataClass->getAnrede();
+	// listeBriefAnrede = dataClass->getBriefAnrede();
 	listeTitel = dataClass->getTitel();
-	listeGeschlecht = dataClass->getGeschlecht();
+	// listeGeschlecht = dataClass->getGeschlecht();
 	listeNachnamenZusatz = dataClass->getNachnamen();
 }
 
@@ -27,38 +26,59 @@ Kontakt^ Parser::parseEingabe(String^ eingabeString)
 	// Zerlege eingabeString in Liste von Wörtern, getrennt nach Leerzeichen
 	List<String^>^ worte = gcnew List<String^>(eingabeString->Split(' '));
 
+	// Aussenstehende Variablen, um schleifen-übergreifend vorausgegangene, erkannte Wörter zu merken
+	bool wasLastMatchTitel = false;
+	bool wasLastMatchPraefix = false;
+	bool wasLastCommaSeparated = false;
+
 	// Schleife für jedes Wort des eingabeStrings
-	for each (String ^ wort in worte) {
+	for each (String^ wort in worte) 
+	{
+		// Schleifen-Variable zur Erkennung, ob eine Übereinstimmung des Wortes bereits gefunden wurde
+		bool wordMatchFound = false;
 
-		bool matchFound = false;
+		// Check, ob Wort eine Anrede ist ("Herr" oder "Frau") und Setzen des Geschlechts
+		if (wort == "Herr" || wort == "Frau")
+		{
+			kontakt->setAnrede(wort);
 
-		// Check, ob Wort eine Anrede ist
-		for each (String ^ anredeItem in listeAnrede) { // sinnlos? xD sind halt zwei Werte
-			if (wort == anredeItem) {
-
-				matchFound = true;
-				kontakt->setAnrede(wort);
-
-				// Setzen des Geschlechts auf Basis der Anrede
-				if (wort == "Herr")
-				{
-					kontakt->setGeschlecht("Männlich");
-					Debug::WriteLine(anredeItem + " set as Anrede, Geschlecht set to Männlich");
-				}
-				else // Wurde eine Anrede erkannt, die nicht "Herr" ist, muss es sich um "Frau" handeln
-				{
-					kontakt->setGeschlecht("Weiblich");
-					Debug::WriteLine(anredeItem + " set as Anrede, Geschlecht set to Weiblich");
-				}
+			if (wort == "Herr")
+			{
+				kontakt->setGeschlecht("Männlich");
+				Debug::WriteLine("Herr set as Anrede, Männlich set as Geschlecht");
 			}
+			else // Wurde eine Anrede erkannt, die nicht "Herr" ist, muss es "Frau" sein
+			{
+				kontakt->setGeschlecht("Weiblich");
+				Debug::WriteLine("Frau set as Anrede, Weiblich set as Geschlecht");
+			}
+
+			wordMatchFound = true;
+			wasLastMatchTitel = false;
+			wasLastMatchPraefix = false;
 		}
 
-		// Check, ob Wort ein Titel ist
-		for each (String ^ titelItem in listeTitel) {
-			if (wort == titelItem) {
+		// TODO add explanation lol
+		if (wasLastMatchTitel && wort[wort->Length - 1] == '.') // TODO add restriction for first letter must be lowercase
+		{
+			if (kontakt->getTitel2() != "") 
+			{
+				kontakt->setTitel2(kontakt->getTitel2() + " " + wort);
+			}
+			else
+			{
+				kontakt->setTitel1(kontakt->getTitel1() + " " + wort);
+			}
 
-				matchFound = true;
-
+			wordMatchFound = true;
+			wasLastMatchTitel = true;
+			wasLastMatchPraefix = false;
+		}
+		// Check, ob Wort mit einem vordefinierten Titel übereinstimmt
+		else for each (String^ titelItem in listeTitel) 
+		{
+			if (wort == titelItem) 
+			{
 				if (kontakt->getTitel1() == "")
 				{
 					kontakt->setTitel1(titelItem);
@@ -69,18 +89,25 @@ Kontakt^ Parser::parseEingabe(String^ eingabeString)
 					kontakt->setTitel2(titelItem);
 					Debug::WriteLine(titelItem + " set as Titel2");
 				}
-				else {
+				else 
+				{
 					// Eingabestring ist invalid, da mehr als zwei Titel erkannt
-					// TODO: set invalid
+					kontakt->setValid(false);
+					Debug::WriteLine(titelItem + " recognized as title but two titles are set already, inputstring is invalid");
 				}
+
+				wordMatchFound = true;
+				wasLastMatchTitel = true;
+				wasLastMatchPraefix = false;
 			}
 		}
 
 		// Check, ob Wort ein Präfix ist
-		for each (String ^ praefixItem in listeNachnamenZusatz) {
-			if (wort == praefixItem) {
-
-				matchFound = true; // TODO: remember last match was nachname präfix
+		for each (String ^ praefixItem in listeNachnamenZusatz) 
+		{
+			if (wort == praefixItem) 
+			{
+				wordMatchFound = true; // TODO: remember last match was nachname präfix
 
 				if (kontakt->getNachname1() == "")
 				{
@@ -92,40 +119,114 @@ Kontakt^ Parser::parseEingabe(String^ eingabeString)
 					kontakt->setNachname2(praefixItem);
 					Debug::WriteLine(praefixItem + " set as Nachname2 Präfix");
 				}
-				else {
+				else 
+				{
 					// Eingabestring ist invalid, da Präfix bei bereits zwei gesetzten Nachnamen erkannt wurde
-					// TODO: set invalid
+					kontakt->setValid(false);
+					Debug::WriteLine(praefixItem + " recognized as praefix but two last names are set already, inputstring is invalid");
 				}
 			}
 		}
 
 		// Wenn keine Übereinstimmung des Wortes gefunden wurde, muss es sich um einen Vor- oder Nachnamen handeln
-		if (!matchFound) {
+		if (!wordMatchFound) 
+		{
+			wasLastMatchTitel = false;
+			wasLastMatchPraefix = false;
 
+			// Ist der letzte Character des Worts ein Komma, handelt es sich um den Nachnamen
 			if (wort[wort->Length - 1] == ',')
 			{
-				// TODO: check if nachname is already set
-				// Ist der letzte Character des Worts ein Komma, handelt es sich um den Nachnamen
-				System::String^ wortOhneKomma = wort->Substring(0, wort->Length - 1);
-				kontakt->setNachname1(wortOhneKomma); // TODO: check if double name
-				Debug::WriteLine(wort + " set as Nachname1");
+				wort = wort->Substring(0, wort->Length - 1);
+
+				// Doppel-Nachnamen-Check
+				if (wort->IndexOf('-') != -1)
+				{
+					System::String^ name1 = wort->Substring(0, wort->IndexOf('-'));
+					System::String^ name2 = wort->Substring(wort->IndexOf('-') + 1);
+
+					if (name2->IndexOf('-') != -1)
+					{
+						// Multi-Nachnamen mit mehr als zwei Bezeichnungen erkannt, Eingabe ist invalid
+						kontakt->setValid(false);
+						Debug::WriteLine(wort + " recognized as multiple last names with more than two, inputstring is invalid");
+					}
+
+					kontakt->setNachname1(name1);
+					kontakt->setNachname2(name2);
+					Debug::WriteLine(name1 + " set as Nachname1, " + name2 + " set as Nachname2");
+				}
+				else
+				{
+					kontakt->setNachname1(wort);
+					Debug::WriteLine(wort + " set as Nachname1");
+				}
+
+				wasLastCommaSeparated = true;
 			}
-			else if (kontakt->getVorname1() == "")
+			// Es handelt es sich um einen Vornamen, sofern:
+			//		- Das vorausgegangene Wort durch ein Komma getrennt war ODER
+			//		- Bisher kein Vorname gesetzt ist UND
+			//		- Das Wort nicht am Ende des Eingabestrings steht 
+			//		  (als letzter Name der Eingabe ohne Vornamen wird davon ausgegangen, dass es sich um den Nachnamen handelt)
+			else if (wasLastCommaSeparated || kontakt->getVorname1() == "" && wort != worte[worte->Count-1])
 			{
-				// Ist bisher kein Vorname gesetzt, handelt es sich um den Vornamen
-				kontakt->setVorname1(wort); // TODO: check for double name
-				Debug::WriteLine(wort + " set as Vorname1");
+				// Doppel-Vornamen-Check
+				if (wort->IndexOf('-') != -1)
+				{
+					System::String^ name1 = wort->Substring(0, wort->IndexOf('-'));
+					System::String^ name2 = wort->Substring(wort->IndexOf('-') + 1);
+
+					if (name2->IndexOf('-') != -1)
+					{
+						// Multi-Vornamen mit mehr als zwei Bezeichnungen erkannt, Eingabe ist invalid
+						kontakt->setValid(false);
+						Debug::WriteLine(wort + " recognized as multiple first names with more than two, inputstring is invalid");
+					}
+
+					kontakt->setVorname1(name1);
+					kontakt->setVorname2(name2);
+					Debug::WriteLine(name1 + " set as Vorname1, " + name2 + " set as Vorname2");
+				}
+				else
+				{
+					kontakt->setVorname1(wort);
+					Debug::WriteLine(wort + " set as Vorname1");
+				}
+
+				wasLastCommaSeparated = false;
 			}
+			// Ist bereits ein Vorname aber kein Nachname gesetzt oder ist das Wort der letzte Name des Eingabestrings, so handelt es sich um den Nachnamen
 			else if (kontakt->getNachname1() == "")
 			{
-				// Ist bereits ein Vorname aber kein Nachname gesetzt, handelt es sich um den Nachnamen
-				kontakt->setNachname1(wort); // TODO: check for double name
-				Debug::WriteLine(wort + " set as Nachname1");
+				// Doppel-Nachnamen-Check
+				if (wort->IndexOf('-') != -1)
+				{
+					System::String^ name1 = wort->Substring(0, wort->IndexOf('-'));
+					System::String^ name2 = wort->Substring(wort->IndexOf('-') + 1);
+
+					if (name2->IndexOf('-') != -1)
+					{
+						// Multi-Nachnamen mit mehr als zwei Bezeichnungen erkannt, Eingabe ist invalid
+						kontakt->setValid(false);
+						Debug::WriteLine(wort + " recognized as multiple last names with more than two, inputstring is invalid");
+					}
+
+					kontakt->setNachname1(name1);
+					kontakt->setNachname2(name2);
+					Debug::WriteLine(name1 + " set as Nachname1, " + name2 + " set as Nachname2");
+				}
+				else
+				{
+					kontakt->setNachname1(wort);
+					Debug::WriteLine(wort + " set as Nachname1");
+				}
 			}
 			else
 			{
 				// Eingabestring ist invalid, da mehrere, nicht durch Bindestrich getrennte Namen gefunden wurden
-				// TODO: set invalid           
+				kontakt->setValid(false);
+				Debug::WriteLine(wort + " recognized as name but first and last name are set already, no double name with '-'; inputstring is invalid");
 			}
 		}
 	}
@@ -136,7 +237,6 @@ Kontakt^ Parser::parseEingabe(String^ eingabeString)
 		kontakt->setGeschlecht("X");
 	}
 
-	Debug::WriteLine("Scanned eingabeString as " + kontakt);
 	return kontakt;
 }
 
@@ -144,7 +244,7 @@ String^ Parser::generateAusgabe(Kontakt^ kontakt)
 {
 	String^ ausgabeString = "";
 
-	// Setzen des Anrede im ausgabeString
+	// Setzen des Anrede im Ausgabestring
 	if (kontakt->getGeschlecht() == "Männlich")
 	{
 		ausgabeString += "Sehr geehrter Herr";
@@ -158,7 +258,7 @@ String^ Parser::generateAusgabe(Kontakt^ kontakt)
 		ausgabeString += "Sehr geehrte*r";
 	}
 
-	// Setzen der Titel im ausgabeString
+	// Setzen der Titel im Ausgabestring
 	if (kontakt->getTitel1() != "")
 	{
 		if (kontakt->getTitel2() != "")
@@ -171,7 +271,7 @@ String^ Parser::generateAusgabe(Kontakt^ kontakt)
 		}
 	}
 
-	// Setzen des Vornamens im ausgabeString
+	// Setzen des Vornamens im Ausgabestring
 	if (kontakt->getVorname1() != "")
 	{
 		if (kontakt->getVorname2() != "")
@@ -184,7 +284,7 @@ String^ Parser::generateAusgabe(Kontakt^ kontakt)
 		}
 	}
 
-	// Setzen des Nachnamens im ausgabeString
+	// Setzen des Nachnamens im Ausgabestring
 	if (kontakt->getNachname1() != "")
 	{
 		if (kontakt->getNachname2() != "")

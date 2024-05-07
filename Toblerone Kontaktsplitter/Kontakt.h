@@ -3,18 +3,22 @@ public ref class Kontakt
 {
 private:
 
-	System::String^ anrede = "";
-	System::String^ titel1 = "";
-	System::String^ titel2 = "";
-	System::String^ vorname1 = "";
-	System::String^ vorname2 = "";
-	System::String^ nachname1 = "";
-	System::String^ nachname2 = "";
-	System::String^ geschlecht = "";
+	System::String^ anrede;
+	System::String^ geschlecht;
+	System::String^ titel1;
+	System::String^ titel2;
+	System::String^ vorname1;
+	System::String^ vorname2;
+	System::String^ nachname1;
+	System::String^ nachname2;
+
+	// TODO: descr
+	bool valid;
 
 public:
 
 	Kontakt(System::String^ anrede, System::String^ geschlecht, System::String^ titel1, System::String^ titel2, System::String^ vorname1, System::String^ vorname2, System::String^ nachname1, System::String^ nachname2);
+	Kontakt(System::String^ anrede, System::String^ geschlecht, System::String^ titel1, System::String^ titel2, System::String^ vorname1, System::String^ vorname2, System::String^ nachname1, System::String^ nachname2, bool valid);
 	Kontakt();
 
 	System::String^ getAnrede();
@@ -25,6 +29,7 @@ public:
 	System::String^ getVorname2();
 	System::String^ getNachname1();
 	System::String^ getNachname2();
+	bool isValid();
 
 	void setAnrede(System::String^ anrede);
 	void setGeschlecht(System::String^ geschlecht);
@@ -34,5 +39,6 @@ public:
 	void setVorname2(System::String^ vorname2);
 	void setNachname1(System::String^ nachname1);
 	void setNachname2(System::String^ nachname2);
+	void setValid(bool valid);
 };
 

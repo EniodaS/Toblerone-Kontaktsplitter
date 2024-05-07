@@ -11,6 +11,20 @@ Kontakt::Kontakt(System::String^ anrede, System::String^ geschlecht, System::Str
 	this->vorname2 = vorname2;
 	this->nachname1 = nachname1;
 	this->nachname2 = nachname2;
+	this->valid = true;
+}
+
+Kontakt::Kontakt(System::String^ anrede, System::String^ geschlecht, System::String^ titel1, System::String^ titel2, System::String^ vorname1, System::String^ vorname2, System::String^ nachname1, System::String^ nachname2, bool isValid)
+{
+	this->anrede = anrede;
+	this->geschlecht = geschlecht;
+	this->titel1 = titel1;
+	this->titel2 = titel2;
+	this->vorname1 = vorname1;
+	this->vorname2 = vorname2;
+	this->nachname1 = nachname1;
+	this->nachname2 = nachname2;
+	this->valid = valid;
 }
 
 Kontakt::Kontakt()
@@ -23,8 +37,10 @@ Kontakt::Kontakt()
 	this->vorname2 = "";
 	this->nachname1 = "";
 	this->nachname2 = "";
+	this->valid = true;
 }
 
+// Getters- und Setter-Methoden
 System::String^ Kontakt::getAnrede()
 {
 	return anrede;
@@ -65,6 +81,11 @@ System::String^ Kontakt::getNachname2()
 	return nachname2;
 }
 
+bool Kontakt::isValid()
+{
+	return valid;
+}
+
 void Kontakt::setAnrede(System::String^ anrede)
 {
 	this->anrede = anrede;
@@ -103,4 +124,9 @@ void Kontakt::setNachname1(System::String^ nachname1)
 void Kontakt::setNachname2(System::String^ nachname2)
 {
 	this->nachname2 = nachname2;
+}
+
+void Kontakt::setValid(bool valid)
+{
+	this->valid = valid;
 }
