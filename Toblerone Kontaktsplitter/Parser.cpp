@@ -45,13 +45,10 @@ Kontakt^ Parser::parseEingabe(String^ eingabeString)
 					kontakt->setGeschlecht("Männlich");
 					Debug::WriteLine(anredeItem + " set as Anrede, Geschlecht set to Männlich");
 				}
-				else if (wort == "Frau")
+				else // Wurde eine Anrede erkannt, die nicht "Herr" ist, muss es sich um "Frau" handeln
 				{
 					kontakt->setGeschlecht("Weiblich");
 					Debug::WriteLine(anredeItem + " set as Anrede, Geschlecht set to Weiblich");
-				}
-				else {
-					kontakt->setGeschlecht("X"); // TODO: wird nie ausgeführt?
 				}
 			}
 		}
@@ -131,6 +128,12 @@ Kontakt^ Parser::parseEingabe(String^ eingabeString)
 				// TODO: set invalid           
 			}
 		}
+	}
+
+	// Wenn nach Parsen des Strings kein Geschlecht gesetzt wurde, ist als Geschlecht "X" anzugeben
+	if (kontakt->getGeschlecht() == "")
+	{
+		kontakt->setGeschlecht("X");
 	}
 
 	Debug::WriteLine("Scanned eingabeString as " + kontakt);

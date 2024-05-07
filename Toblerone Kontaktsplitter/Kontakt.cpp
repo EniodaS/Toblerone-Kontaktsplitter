@@ -1,33 +1,38 @@
 #include "pch.h"
 #include "Kontakt.h"
 
-Kontakt::Kontakt(System::String^ anrede, System::String^ titel1, System::String^ titel2, System::String^ vorname1, System::String^ vorname2, System::String^ nachname1, System::String^ nachname2, System::String^ geschlecht)
+Kontakt::Kontakt(System::String^ anrede, System::String^ geschlecht, System::String^ titel1, System::String^ titel2, System::String^ vorname1, System::String^ vorname2, System::String^ nachname1, System::String^ nachname2)
 {
 	this->anrede = anrede;
+	this->geschlecht = geschlecht;
 	this->titel1 = titel1;
 	this->titel2 = titel2;
 	this->vorname1 = vorname1;
 	this->vorname2 = vorname2;
 	this->nachname1 = nachname1;
 	this->nachname2 = nachname2;
-	this->geschlecht = geschlecht;
 }
 
 Kontakt::Kontakt()
 {
 	this->anrede = "";
+	this->geschlecht = "";
 	this->titel1 = "";
 	this->titel2 = "";
 	this->vorname1 = "";
 	this->vorname2 = "";
 	this->nachname1 = "";
 	this->nachname2 = "";
-	this->geschlecht = "";
 }
 
 System::String^ Kontakt::getAnrede()
 {
 	return anrede;
+}
+
+System::String^ Kontakt::getGeschlecht()
+{
+	return geschlecht;
 }
 
 System::String^ Kontakt::getTitel1()
@@ -60,14 +65,14 @@ System::String^ Kontakt::getNachname2()
 	return nachname2;
 }
 
-System::String^ Kontakt::getGeschlecht()
-{
-	return geschlecht;
-}
-
 void Kontakt::setAnrede(System::String^ anrede)
 {
 	this->anrede = anrede;
+}
+
+void Kontakt::setGeschlecht(System::String^ geschlecht)
+{
+	this->geschlecht = geschlecht;
 }
 
 void Kontakt::setTitel1(System::String^ titel1)
@@ -98,9 +103,4 @@ void Kontakt::setNachname1(System::String^ nachname1)
 void Kontakt::setNachname2(System::String^ nachname2)
 {
 	this->nachname2 = nachname2;
-}
-
-void Kontakt::setGeschlecht(System::String^ geschlecht)
-{
-	this->geschlecht = geschlecht;
 }
