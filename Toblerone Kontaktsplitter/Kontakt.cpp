@@ -1,15 +1,28 @@
 #include "pch.h"
 #include "Kontakt.h"
 
-Kontakt::Kontakt(System::String^ anrede, System::String^ titel1, System::String^ titel2, System::String^ vorname, System::String^ nachname, System::String^ geschlecht, System::String^ briefAnrede)
+Kontakt::Kontakt(System::String^ anrede, System::String^ titel1, System::String^ titel2, System::String^ vorname1, System::String^ vorname2, System::String^ nachname1, System::String^ nachname2, System::String^ geschlecht)
 {
 	this->anrede = anrede;
 	this->titel1 = titel1;
 	this->titel2 = titel2;
-	this->vorname = vorname;
-	this->nachname = nachname;
+	this->vorname1 = vorname1;
+	this->vorname2 = vorname2;
+	this->nachname1 = nachname1;
+	this->nachname2 = nachname2;
 	this->geschlecht = geschlecht;
-	this->briefAnrede = briefAnrede;
+}
+
+Kontakt::Kontakt()
+{
+	this->anrede = "";
+	this->titel1 = "";
+	this->titel2 = "";
+	this->vorname1 = "";
+	this->vorname2 = "";
+	this->nachname1 = "";
+	this->nachname2 = "";
+	this->geschlecht = "";
 }
 
 System::String^ Kontakt::getAnrede()
@@ -27,14 +40,24 @@ System::String^ Kontakt::getTitel2()
 	return titel2;
 }
 
-System::String^ Kontakt::getVorname()
+System::String^ Kontakt::getVorname1()
 {
-	return vorname;
+	return vorname1;
 }
 
-System::String^ Kontakt::getNachname()
+System::String^ Kontakt::getVorname2()
 {
-	return nachname;
+	return vorname2;
+}
+
+System::String^ Kontakt::getNachname1()
+{
+	return nachname1;
+}
+
+System::String^ Kontakt::getNachname2()
+{
+	return nachname2;
 }
 
 System::String^ Kontakt::getGeschlecht()
@@ -42,7 +65,42 @@ System::String^ Kontakt::getGeschlecht()
 	return geschlecht;
 }
 
-System::String^ Kontakt::getBriefAnrede()
+void Kontakt::setAnrede(System::String^ anrede)
 {
-	return briefAnrede;
+	this->anrede = anrede;
+}
+
+void Kontakt::setTitel1(System::String^ titel1)
+{
+	this->titel1 = titel1;
+}
+
+void Kontakt::setTitel2(System::String^ titel2)
+{
+	this->titel2 = titel2;
+}
+
+void Kontakt::setVorname1(System::String^ vorname1)
+{
+	this->vorname1 = vorname1;
+}
+
+void Kontakt::setVorname2(System::String^ vorname2)
+{
+	this->vorname2 = vorname2;
+}
+
+void Kontakt::setNachname1(System::String^ nachname1)
+{
+	this->nachname1 = nachname1;
+}
+
+void Kontakt::setNachname2(System::String^ nachname2)
+{
+	this->nachname2 = nachname2;
+}
+
+void Kontakt::setGeschlecht(System::String^ geschlecht)
+{
+	this->geschlecht = geschlecht;
 }
