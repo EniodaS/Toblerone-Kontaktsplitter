@@ -53,7 +53,7 @@ DataClass::DataClass()
 	listeTitel->Add("Edler");
 	listeTitel->Add("Junker");
 
-	// Praefixe aus Beispielen 
+	// Präfixe aus Beispielen 
 	listePraefixe->Add("von");
 	listePraefixe->Add("vom");
 	listePraefixe->Add("van");

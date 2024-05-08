@@ -35,7 +35,8 @@ Kontakt^ Parser::parseEingabe(String^ eingabeString)
 		bool wordMatchFound = false;
 
 		// Check, ob Wort eine Anrede ist ("Herr" oder "Frau") und Setzen des Geschlechts
-		if (wort == "Herr" || wort == "Frau")
+		// Ist bereits eine Anrede gesetzt, wird das Wort als Name angenommen und in der Schleife weitergereicht
+		if ((wort == "Herr" || wort == "Frau") && kontakt->getAnrede() == "")
 		{
 			kontakt->setAnrede(wort);
 
@@ -56,7 +57,7 @@ Kontakt^ Parser::parseEingabe(String^ eingabeString)
 		}
 
 		// TODO add explanation lol
-		if (wasLastMatchTitel && wort[wort->Length - 1] == '.') // TODO add restriction for first letter must be lowercase
+		if (wasLastMatchTitel && wort[wort->Length - 1] == '.' && Char::IsLower(wort[0]))
 		{
 			if (kontakt->getTitel2() != "") 
 			{
@@ -104,13 +105,26 @@ Kontakt^ Parser::parseEingabe(String^ eingabeString)
 		{
 			if (wort == praefixItem) 
 			{
-				wordMatchFound = true; // TODO: remember last match was nachname präfix
+				// Wenn letztes Wort Präfix und Nachname2 bereits gesetzt: dann weiterer Präfix von Nachname2
+				if (wasLastMatchPraefix && kontakt->getNachname2() != "")
+				{
+					kontakt->setNachname2(kontakt->getNachname2() + " " + praefixItem);
+					Debug::WriteLine(praefixItem + " added to Nachname2");
 
-				if (kontakt->getNachname1() == "")
+				}
+				// Wenn letztes Wort Präfix und Nachname1 bereits gesetzt: dann weiterer Präfix von Nachname1
+				if (wasLastMatchPraefix && kontakt->getNachname1() != "")
+				{
+					kontakt->setNachname1(kontakt->getNachname1() + " " + praefixItem);
+					Debug::WriteLine(praefixItem + " added to Nachname1");
+				}
+				// Wenn letztes Wort kein Präfix und Nachname1 leer: dann gehört Präfix zu Nachname1
+				else if (kontakt->getNachname1() == "")
 				{
 					kontakt->setNachname1(praefixItem);
 					Debug::WriteLine(praefixItem + " set as Nachname1 Präfix");
 				}
+				// Wenn letztes Wort kein Präfix und Nachname2 leer: dann gehört Präfix zu Nachname2
 				else if (kontakt->getNachname2() == "")
 				{
 					kontakt->setNachname2(praefixItem);
@@ -118,19 +132,20 @@ Kontakt^ Parser::parseEingabe(String^ eingabeString)
 				}
 				else 
 				{
-					// Eingabestring ist invalid, da Präfix bei bereits zwei gesetzten Nachnamen erkannt wurde
+					// Eingabestring invalid: Präfix mit bereits zwei gesetzten Nachnamen ohne vorherigen Präfix erkannt
 					kontakt->setValid(false);
 					Debug::WriteLine(praefixItem + " recognized as praefix but two last names are set already, inputstring is invalid");
 				}
+
+				wordMatchFound = true;
+				wasLastMatchTitel = false;
+				wasLastMatchPraefix = true;
 			}
 		}
 
-		// Wenn keine Übereinstimmung des Wortes gefunden wurde, muss es sich um einen Vor- oder Nachnamen handeln
+		// Wenn keine Übereinstimmung des Wortes gefunden: dann muss Wort ein Vor- oder Nachname sein
 		if (!wordMatchFound) 
 		{
-			wasLastMatchTitel = false;
-			wasLastMatchPraefix = false;
-
 			// Ist der letzte Character des Worts ein Komma, handelt es sich um den Nachnamen
 			if (wort[wort->Length - 1] == ',')
 			{
@@ -145,18 +160,47 @@ Kontakt^ Parser::parseEingabe(String^ eingabeString)
 					if (name2->IndexOf('-') != -1)
 					{
 						// Multi-Nachnamen mit mehr als zwei Bezeichnungen erkannt, Eingabe ist invalid
+						// Multi-Nachname wird als mehrfacher zweiter Nachname behandelt
 						kontakt->setValid(false);
-						Debug::WriteLine(wort + " recognized as multiple last names with more than two, inputstring is invalid");
+						Debug::WriteLine(name2 + " recognized as multiple last names with more than two, inputstring is invalid");
 					}
 
-					kontakt->setNachname1(name1);
+					// Vorläufiger Präfix erkannt: erster Nachname wird angehängt statt gesetzt
+					if (wasLastMatchPraefix)
+					{
+						kontakt->setNachname1(kontakt->getNachname1() + " " + name1);
+						Debug::WriteLine(name1 + " appended at Praefix of Nachname1");
+					}
+					else
+					{
+						kontakt->setNachname1(name1);
+						Debug::WriteLine(name1 + " set as Nachname1");
+					}
+
 					kontakt->setNachname2(name2);
-					Debug::WriteLine(name1 + " set as Nachname1, " + name2 + " set as Nachname2");
+					Debug::WriteLine(name2 + " set as Nachname2");
 				}
 				else
 				{
-					kontakt->setNachname1(wort);
-					Debug::WriteLine(wort + " set as Nachname1");
+					// Vorläufiger Präfix erkannt: Nachname wird ans zuletzt gesetzte Feld angehängt statt gesetzt
+					if (wasLastMatchPraefix)
+					{
+						if (kontakt->getNachname2() != "") 
+						{
+							kontakt->setNachname2(kontakt->getNachname2() + " " + wort);
+							Debug::WriteLine(wort + " appended at Praefix of Nachname2");
+						}
+						else
+						{
+							kontakt->setNachname1(kontakt->getNachname1() + " " + wort);
+							Debug::WriteLine(wort + " appended at Praefix of Nachname1");
+						}
+					}
+					else
+					{
+						kontakt->setNachname1(wort);
+						Debug::WriteLine(wort + " set as Nachname1");
+					}
 				}
 
 				wasLastCommaSeparated = true;
@@ -177,6 +221,7 @@ Kontakt^ Parser::parseEingabe(String^ eingabeString)
 					if (name2->IndexOf('-') != -1)
 					{
 						// Multi-Vornamen mit mehr als zwei Bezeichnungen erkannt, Eingabe ist invalid
+						// Multi-Nachname wird als mehrfacher zweiter Nachname behandelt
 						kontakt->setValid(false);
 						Debug::WriteLine(wort + " recognized as multiple first names with more than two, inputstring is invalid");
 					}
@@ -193,8 +238,10 @@ Kontakt^ Parser::parseEingabe(String^ eingabeString)
 
 				wasLastCommaSeparated = false;
 			}
-			// Ist bereits ein Vorname aber kein Nachname gesetzt oder ist das Wort der letzte Name des Eingabestrings, so handelt es sich um den Nachnamen
-			else if (kontakt->getNachname1() == "")
+			// Es handelt sich um den Nachnamen, wenn:
+			//		Ein Vorname bereits gesetzt ist aber kein Nachname ORDER
+			//		Das letzte Wort war ein Präfix
+			else if (kontakt->getNachname1() == "" || wasLastMatchPraefix)
 			{
 				// Doppel-Nachnamen-Check
 				if (wort->IndexOf('-') != -1)
@@ -205,18 +252,47 @@ Kontakt^ Parser::parseEingabe(String^ eingabeString)
 					if (name2->IndexOf('-') != -1)
 					{
 						// Multi-Nachnamen mit mehr als zwei Bezeichnungen erkannt, Eingabe ist invalid
+						// Multi-Nachname wird als mehrfacher zweiter Nachname behandelt
 						kontakt->setValid(false);
-						Debug::WriteLine(wort + " recognized as multiple last names with more than two, inputstring is invalid");
+						Debug::WriteLine(name2 + " recognized as multiple last names with more than two, inputstring is invalid");
 					}
 
-					kontakt->setNachname1(name1);
+					// Vorläufiger Präfix erkannt: erster Nachname wird angehängt statt gesetzt
+					if (wasLastMatchPraefix)
+					{
+						kontakt->setNachname1(kontakt->getNachname1() + " " + name1);
+						Debug::WriteLine(name1 + " appended at Praefix of Nachname1");
+					}
+					else
+					{
+						kontakt->setNachname1(name1);
+						Debug::WriteLine(name1 + " set as Nachname1");
+					}
+
 					kontakt->setNachname2(name2);
-					Debug::WriteLine(name1 + " set as Nachname1, " + name2 + " set as Nachname2");
+					Debug::WriteLine(name2 + " set as Nachname2");
 				}
 				else
 				{
-					kontakt->setNachname1(wort);
-					Debug::WriteLine(wort + " set as Nachname1");
+					// Vorläufiger Präfix erkannt: Nachname wird ans zuletzt gesetzte Feld angehängt statt gesetzt
+					if (wasLastMatchPraefix)
+					{
+						if (kontakt->getNachname2() != "")
+						{
+							kontakt->setNachname2(kontakt->getNachname2() + " " + wort);
+							Debug::WriteLine(wort + " appended at Praefix of Nachname2");
+						}
+						else
+						{
+							kontakt->setNachname1(kontakt->getNachname1() + " " + wort);
+							Debug::WriteLine(wort + " appended at Praefix of Nachname1");
+						}
+					}
+					else
+					{
+						kontakt->setNachname1(wort);
+						Debug::WriteLine(wort + " set as Nachname1");
+					}
 				}
 			}
 			else
@@ -225,6 +301,9 @@ Kontakt^ Parser::parseEingabe(String^ eingabeString)
 				kontakt->setValid(false);
 				Debug::WriteLine(wort + " recognized as name but first and last name are set already, no double name with '-'; inputstring is invalid");
 			}
+
+			wasLastMatchTitel = false;
+			wasLastMatchPraefix = false;
 		}
 	}
 

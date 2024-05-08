@@ -41,4 +41,3 @@ public:
 	void setNachname2(System::String^ nachname2);
 	void setValid(bool valid);
 };
-
