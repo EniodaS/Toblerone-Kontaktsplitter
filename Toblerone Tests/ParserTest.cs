@@ -188,7 +188,7 @@ namespace Toblerone_Tests
         }
 
         [Test]
-        public void TestParseValidInput_Testcase08()
+        public void TestParseValidInput_Edgecase02()
         {
             // Sonderfälle Präfix
             // Arrange
