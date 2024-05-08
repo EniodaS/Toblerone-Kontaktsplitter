@@ -7,17 +7,10 @@ using namespace System::Collections::Generic;
 
 DataClass::DataClass()
 {
-	listeAnrede = gcnew List<String^>(); // TODO useless?
-	listeAnrede->Add("Herr");
-	listeAnrede->Add("Frau");
-	listeAnrede->Add("X");
-
-	listeBriefAnrede = gcnew List<String^>(); // TODO useless?
-	listeBriefAnrede->Add("Sehr geehrter");
-	listeBriefAnrede->Add("Sehr geehrte");
-	listeBriefAnrede->Add("Sehr geehrte*r");
-
 	listeTitel = gcnew List<String^>();
+	listePraefixe = gcnew List<String^>();
+
+	// Akademische Titel aus Beispielen
 	listeTitel->Add("Dr.");
 	listeTitel->Add("Doktor");
 	listeTitel->Add("Prof.");
@@ -25,31 +18,49 @@ DataClass::DataClass()
 	listeTitel->Add("Dipl.");
 	listeTitel->Add("Ing.");
 	listeTitel->Add("Dr.-Ing.");
-	// TODO: add more, Quellenangaben bei Listen aus dem Internet!
+	listeTitel->Add("Dipl.-Ing.");
 
-	listeGeschlecht = gcnew List<String^>(); // TODO useless?
-	listeGeschlecht->Add("männlich");
-	listeGeschlecht->Add("weiblich");
-	listeGeschlecht->Add("divers");
+	// Weitere akademische Titel
+	// Quelle: https://www.tabellarischer-lebenslauf.net/beruf-arbeitsleben/akademische-titel/
+	listeTitel->Add("B.A.");
+	listeTitel->Add("B.MA.");
+	listeTitel->Add("B.Sc.");
+	listeTitel->Add("B.Eng.");
+	listeTitel->Add("B.BA.");
+	listeTitel->Add("B.Ed.");
+	listeTitel->Add("B.B.");
+	listeTitel->Add("M.A.");
+	listeTitel->Add("M.MA.");
+	listeTitel->Add("M.Sc.");
+	listeTitel->Add("M.Eng.");
+	listeTitel->Add("M.MBA.");
+	listeTitel->Add("M.Ed.");
+	listeTitel->Add("M.M.");
+	listeTitel->Add("Dipl.-Kfm.");
+	listeTitel->Add("Dipl.-Infor.");
+	listeTitel->Add("Dipl.-Chem.");
 
-	listeNachnamenZusatz = gcnew List<String^>();
-	listeNachnamenZusatz->Add("von");
-	listeNachnamenZusatz->Add("vom");
-	listeNachnamenZusatz->Add("van");
-	listeNachnamenZusatz->Add("de");
-	listeNachnamenZusatz->Add("der");
-	listeNachnamenZusatz->Add("hof"); // ???
-	// TODO: add more, Quellenangaben bei Listen aus dem Internet!
-}
+	// Adelstitel
+	// Quelle: https://www.rosepartner.de/adelsrecht.html
+	listeTitel->Add("Kaiser");
+	listeTitel->Add("König");
+	listeTitel->Add("Herzog");
+	listeTitel->Add("Fürst");
+	listeTitel->Add("Graf");
+	listeTitel->Add("Baron");
+	listeTitel->Add("Freiherr");
+	listeTitel->Add("Ritter");
+	listeTitel->Add("Edler");
+	listeTitel->Add("Junker");
 
-List<String^>^ DataClass::getAnrede()
-{
-	return listeAnrede;
-}
-
-List<String^>^ DataClass::getBriefAnrede()
-{
-	return listeBriefAnrede;
+	// Praefixe aus Beispielen 
+	listePraefixe->Add("von");
+	listePraefixe->Add("vom");
+	listePraefixe->Add("van");
+	listePraefixe->Add("de");
+	listePraefixe->Add("der");
+	listePraefixe->Add("den");
+	listePraefixe->Add("zu");
 }
 
 List<String^>^ DataClass::getTitel()
@@ -57,12 +68,7 @@ List<String^>^ DataClass::getTitel()
 	return listeTitel;
 }
 
-List<String^>^ DataClass::getGeschlecht()
+List<String^>^ DataClass::getPraefixe()
 {
-	return listeGeschlecht;
-}
-
-List<String^>^ DataClass::getNachnamen()
-{
-	return listeNachnamenZusatz;
+	return listePraefixe;
 }

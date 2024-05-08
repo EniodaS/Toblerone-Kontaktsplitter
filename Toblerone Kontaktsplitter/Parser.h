@@ -11,7 +11,7 @@ private:
 	System::Collections::Generic::List<System::String^>^ listeAnrede;
 	System::Collections::Generic::List<System::String^>^ listeTitel;
 	System::Collections::Generic::List<System::String^>^ listeGeschlecht;
-	System::Collections::Generic::List<System::String^>^ listeNachnamenZusatz;
+	System::Collections::Generic::List<System::String^>^ listePraefixe;
 
 public:
 

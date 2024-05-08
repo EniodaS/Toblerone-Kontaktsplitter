@@ -12,11 +12,8 @@ using namespace System::Diagnostics;
 
 Parser::Parser(DataClass^ dataClass)
 {
-	// listeAnrede = dataClass->getAnrede();
-	// listeBriefAnrede = dataClass->getBriefAnrede();
 	listeTitel = dataClass->getTitel();
-	// listeGeschlecht = dataClass->getGeschlecht();
-	listeNachnamenZusatz = dataClass->getNachnamen();
+	listePraefixe = dataClass->getPraefixe();
 }
 
 Kontakt^ Parser::parseEingabe(String^ eingabeString)
@@ -103,7 +100,7 @@ Kontakt^ Parser::parseEingabe(String^ eingabeString)
 		}
 
 		// Check, ob Wort ein Präfix ist
-		for each (String ^ praefixItem in listeNachnamenZusatz) 
+		for each (String ^ praefixItem in listePraefixe) 
 		{
 			if (wort == praefixItem) 
 			{

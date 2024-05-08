@@ -1,14 +1,13 @@
 #pragma once
 #include "UiService.h"
 
+// TODO: fix UI für Designer -.-" 
+//		ich horst hab im DONOTCHANGE bereich sachen gechanged
+//		letzter funktionierender stand war deiner: https://github.com/EniodaS/Toblerone-Kontaktsplitter/blob/4a97cc79feb44d943b29fd25403c1035a44f32d1/Toblerone%20Kontaktsplitter/Form1.h
+// TODO: Deklarative Kommentare entfernen?
+// TODO: Form1 deklariativer umbenennen?
 namespace CppCLRWinFormsProject
 {
-	// TODO: DataClass entfernen
-	// TODO: nach finaler Gui: -.-"
-	//	GUI-Elemente sortieren? 
-	//	unnötigen Code & Kommentare entfernen
-	// Form1 deklariativer umbenennen?
-
 	using namespace System;
 	using namespace System::ComponentModel;
 	using namespace System::Collections;
@@ -27,20 +26,7 @@ namespace CppCLRWinFormsProject
 	private:
 
 		DataClass^ dataClass;
-	private: System::Windows::Forms::TextBox^ VornameFeld2;
-	private: System::Windows::Forms::TextBox^ NachnameFeld2;
-	private: System::Windows::Forms::Label^ VornameLabel2;
-
-
-
-	private: System::Windows::Forms::Label^ NachnameLabel2;
-	private: System::Windows::Forms::Label^ LabelNotice;
-	private: System::Windows::Forms::Label^ LabelInvalid;
-	private: System::Windows::Forms::Label^ label1;
-
-
-
-		   UiService^ uiService;
+		UiService^ uiService;
 
 	public:
 
@@ -63,11 +49,9 @@ namespace CppCLRWinFormsProject
 			}
 		}
 
-	// Button Deklaration
 	private: System::Windows::Forms::Button^ ScanButton;
 	private: System::Windows::Forms::Button^ UpdateButton;
 	private: System::Windows::Forms::Button^ SaveButton;
-	// Feld Deklaration
 	private: System::Windows::Forms::TextBox^ EingabeFeld;
 	private: System::Windows::Forms::TextBox^ AusgabeFeld;
 	private: System::Windows::Forms::TextBox^ AnredeFeld;
@@ -76,9 +60,13 @@ namespace CppCLRWinFormsProject
 	private: System::Windows::Forms::TextBox^ TitelFeld2;
 	private: System::Windows::Forms::TextBox^ VornameFeld1;
 	private: System::Windows::Forms::TextBox^ NachnameFeld1;
-
-
-	// Label Deklaration
+	private: System::Windows::Forms::TextBox^ VornameFeld2;
+	private: System::Windows::Forms::TextBox^ NachnameFeld2;
+	private: System::Windows::Forms::Label^ VornameLabel2;
+	private: System::Windows::Forms::Label^ NachnameLabel2;
+	private: System::Windows::Forms::Label^ LabelNotice;
+	private: System::Windows::Forms::Label^ LabelInvalid;
+	private: System::Windows::Forms::Label^ label1;
 	private: System::Windows::Forms::Label^ EingabeLabel;
 	private: System::Windows::Forms::Label^ AusgabeLabel;
 	private: System::Windows::Forms::Label^ AnredeLabel;
@@ -87,8 +75,6 @@ namespace CppCLRWinFormsProject
 	private: System::Windows::Forms::Label^ TitelLabel2;
 	private: System::Windows::Forms::Label^ VornameLabel1;
 	private: System::Windows::Forms::Label^ NachnameLabel1;
-
-
 
 	private:
 		/// <summary>
