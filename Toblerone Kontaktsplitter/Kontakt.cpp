@@ -40,7 +40,110 @@ Kontakt::Kontakt()
 	this->valid = true;
 }
 
-// Getters- und Setter-Methoden
+void Kontakt::addTitel1(System::String^ titel1)
+{
+	this->titel1 = this->titel1 + " " + titel1;
+}
+
+void Kontakt::addTitel2(System::String^ titel2)
+{
+	this->titel2 = this->titel2 + " " + titel2;
+}
+
+void Kontakt::addVorname1(System::String^ vorname1)
+{
+	this->vorname1 = this->vorname1 + " " + vorname1;
+}
+
+void Kontakt::addVorname2(System::String^ vorname2)
+{
+	this->vorname2 = this->vorname2 + " " + vorname2;
+}
+
+void Kontakt::addNachname1(System::String^ nachname1)
+{
+	this->nachname1 = this->nachname1 + " " + nachname1;
+}
+
+void Kontakt::addNachname2(System::String^ nachname2)
+{
+	this->nachname2 = this->nachname2 + " " + nachname2;
+}
+
+// Setters- und Getter-Methoden
+void Kontakt::setAnrede(System::String^ anrede)
+{
+	if (this->anrede != "")
+	{
+		this->valid = false;
+	}
+	this->anrede = anrede;
+}
+
+void Kontakt::setGeschlecht(System::String^ geschlecht)
+{
+	this->geschlecht = geschlecht;
+}
+
+void Kontakt::setTitel1(System::String^ titel1)
+{
+	if (this->titel1 != "")
+	{
+		this->valid = false;
+	}
+	this->titel1 = titel1;
+}
+
+void Kontakt::setTitel2(System::String^ titel2)
+{
+	if (this->titel2 != "")
+	{
+		this->valid = false;
+	}
+	this->titel2 = titel2;
+}
+
+void Kontakt::setVorname1(System::String^ vorname1)
+{
+	if (this->vorname1 != "")
+	{
+		this->valid = false;
+	}
+	this->vorname1 = vorname1;
+}
+
+void Kontakt::setVorname2(System::String^ vorname2)
+{
+	if (this->vorname2 != "")
+	{
+		this->valid = false;
+	}
+	this->vorname2 = vorname2;
+}
+
+void Kontakt::setNachname1(System::String^ nachname1)
+{
+	if (this->nachname1 != "")
+	{
+		this->valid = false;
+	}
+	this->nachname1 = nachname1;
+}
+
+void Kontakt::setNachname2(System::String^ nachname2)
+{
+	if (this->nachname2 != "")
+	{
+		this->valid = false;
+	}
+	this->nachname2 = nachname2;
+}
+
+void Kontakt::setValid(bool valid)
+{
+	this->valid = valid;
+}
+
 System::String^ Kontakt::getAnrede()
 {
 	return anrede;
@@ -84,49 +187,4 @@ System::String^ Kontakt::getNachname2()
 bool Kontakt::isValid()
 {
 	return valid;
-}
-
-void Kontakt::setAnrede(System::String^ anrede)
-{
-	this->anrede = anrede;
-}
-
-void Kontakt::setGeschlecht(System::String^ geschlecht)
-{
-	this->geschlecht = geschlecht;
-}
-
-void Kontakt::setTitel1(System::String^ titel1)
-{
-	this->titel1 = titel1;
-}
-
-void Kontakt::setTitel2(System::String^ titel2)
-{
-	this->titel2 = titel2;
-}
-
-void Kontakt::setVorname1(System::String^ vorname1)
-{
-	this->vorname1 = vorname1;
-}
-
-void Kontakt::setVorname2(System::String^ vorname2)
-{
-	this->vorname2 = vorname2;
-}
-
-void Kontakt::setNachname1(System::String^ nachname1)
-{
-	this->nachname1 = nachname1;
-}
-
-void Kontakt::setNachname2(System::String^ nachname2)
-{
-	this->nachname2 = nachname2;
-}
-
-void Kontakt::setValid(bool valid)
-{
-	this->valid = valid;
 }
