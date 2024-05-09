@@ -12,12 +12,27 @@ UiService::UiService(DataClass^ data)
 
 void UiService::scan(String^ eingabeString)
 {
+	//entferne Leerzeichen am Anfang und Ende
+	eingabeString = eingabeString->Trim();
 
-
-
-	if (eingabeString == "") {
+	//mache nichts wenn Eingabe leer ist
+	if (eingabeString == "")
+	{
+		//damit die Überprüf Nachricht verschwindet wenn keine Eingabe gegeben ist
+		kontakt->setValid(true);
 		return;
 	}
+
+	//überprüfe ob ein Buchstabe vorhanden ist
+	System::Text::RegularExpressions::Regex^ regexHasLetter = gcnew System::Text::RegularExpressions::Regex("[a-zA-Z]");
+
+	if (!regexHasLetter->IsMatch(eingabeString))
+	{
+		kontakt->setValid(false);
+		return;
+	}
+
+
 
 
 	
@@ -38,12 +53,8 @@ void UiService::scan(String^ eingabeString)
 	kontakt = parser->parseEingabe(eingabeString);
 	ausgabeString = parser->generateAusgabe(kontakt);
 
-	//überprüfe ob ein Buchstabe vorhanden ist
-	System::Text::RegularExpressions::Regex^ regexHasLetter = gcnew System::Text::RegularExpressions::Regex("[a-zA-Z]");
-	if (!regexHasLetter->IsMatch(eingabeString))
-	{
-		kontakt->setValid(false);
-	}
+
+
 
 }
 
