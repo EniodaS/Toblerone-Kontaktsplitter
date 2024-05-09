@@ -167,6 +167,7 @@ namespace CppCLRWinFormsProject
 				static_cast<System::Byte>(0)));
 			this->AusgabeFeld->Location = System::Drawing::Point(37, 414);
 			this->AusgabeFeld->Name = L"AusgabeFeld";
+			this->AusgabeFeld->ReadOnly = true;
 			this->AusgabeFeld->Size = System::Drawing::Size(440, 21);
 			this->AusgabeFeld->TabIndex = 14;
 			// 
