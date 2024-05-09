@@ -352,15 +352,20 @@ String^ Parser::generateAusgabe(Kontakt^ kontakt)
 	// Setzen des Anrede im Ausgabestring
 	if (kontakt->getGeschlecht() == "Männlich")
 	{
-		ausgabeString += "Sehr geehrter Herr";
+		ausgabeString += "Sehr geehrter";
 	}
 	else if (kontakt->getGeschlecht() == "Weiblich")
 	{
-		ausgabeString += "Sehr geehrte Frau";
+		ausgabeString += "Sehr geehrte";
 	}
 	else
 	{
 		ausgabeString += "Sehr geehrte*r";
+	}
+
+	if (kontakt->getAnrede() != "")
+	{
+		ausgabeString += " " + kontakt->getAnrede();
 	}
 
 	// Setzen der Titel im Ausgabestring
