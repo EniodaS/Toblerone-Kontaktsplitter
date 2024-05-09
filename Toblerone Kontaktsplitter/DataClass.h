@@ -13,6 +13,7 @@ public:
 	DataClass();
 
 	System::Collections::Generic::List<System::String^>^ getTitel();
+	void addTitel(System::String^ titel);
 
 	System::Collections::Generic::List<System::String^>^ getPraefixe();
 };

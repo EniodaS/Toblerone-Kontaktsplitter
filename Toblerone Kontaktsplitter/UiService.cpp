@@ -6,30 +6,77 @@ using namespace System::Collections::Generic;
 
 UiService::UiService(DataClass^ data)
 {
-	dataClass = data; // TODO: data class hier sinnlos?
+	dataClass = data; 
 	parser = gcnew Parser(dataClass);
 }
 
 void UiService::scan(String^ eingabeString)
 {
-	// TODO: fix Eingabe mit vielen Leerzeichen führt zu Error
-	kontakt = parser->parseEingabe(eingabeString);
 
+
+
+	if (eingabeString == "") {
+		return;
+	}
+
+
+	
+	//wiederholte Leerzeichen, Kommas, Bindestriche und Punkte werden gekürzt
+	System::Text::RegularExpressions::Regex^ regexSpace = gcnew System::Text::RegularExpressions::Regex("\\s+");
+	System::Text::RegularExpressions::Regex^ regexDot = gcnew System::Text::RegularExpressions::Regex("\\.+");
+	System::Text::RegularExpressions::Regex^ regexComma = gcnew System::Text::RegularExpressions::Regex(",+");
+	System::Text::RegularExpressions::Regex^ regexHyphen = gcnew System::Text::RegularExpressions::Regex("-+");
+
+	eingabeString = regexSpace->Replace(eingabeString, " ");
+	eingabeString = regexDot->Replace(eingabeString, ".");
+	eingabeString = regexComma->Replace(eingabeString, ",");
+	eingabeString = regexHyphen->Replace(eingabeString, "-");
+
+
+
+	// parse Eingabe
+	kontakt = parser->parseEingabe(eingabeString);
 	ausgabeString = parser->generateAusgabe(kontakt);
+
+	//überprüfe ob ein Buchstabe vorhanden ist
+	System::Text::RegularExpressions::Regex^ regexHasLetter = gcnew System::Text::RegularExpressions::Regex("[a-zA-Z]");
+	if (!regexHasLetter->IsMatch(eingabeString))
+	{
+		kontakt->setValid(false);
+	}
+
 }
 
 void UiService::update()
 {
-	// TODO: fix update leerer Angaben generiert nur Briefanrede
+
 	ausgabeString = parser->generateAusgabe(kontakt);
 }
 
 void UiService::save()
 {
-	// TODO implement Speichern neue Titel
+	//neuen Titel hinzufügen
+	if (!dataClass->getTitel()->Contains(kontakt->getTitel1()))
+	{
+		dataClass->addTitel(kontakt->getTitel1());
+	}
+
+	if (!dataClass->getTitel()->Contains(kontakt->getTitel2()))
+	{
+		dataClass->addTitel(kontakt->getTitel1());
+	}
+
+
+	//an dieser Stelle könnte die Datenbankanbindung sein
+
 	kontakt = gcnew Kontakt();
 
 	ausgabeString = "";
+}
+
+bool UiService::getValidity()
+{
+	return kontakt->isValid();
 }
 
 String^ UiService::getAusgabe()
