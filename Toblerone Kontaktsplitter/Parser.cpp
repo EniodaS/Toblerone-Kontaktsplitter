@@ -360,18 +360,9 @@ String^ Parser::generateAusgabe(Kontakt^ kontakt)
 {
 	String^ ausgabeString = "";
 
-	// Setzen des Anrede im Ausgabestring
-	if (kontakt->getGeschlecht() == "Männlich")
+	if (kontakt->getAnrede() != "")
 	{
-		ausgabeString += "Sehr geehrter Herr";
-	}
-	else if (kontakt->getGeschlecht() == "Weiblich")
-	{
-		ausgabeString += "Sehr geehrte Frau";
-	}
-	else
-	{
-		ausgabeString += "Sehr geehrte*r";
+		ausgabeString += " " + kontakt->getAnrede();
 	}
 
 	// Setzen der Titel im Ausgabestring
@@ -410,6 +401,24 @@ String^ Parser::generateAusgabe(Kontakt^ kontakt)
 		else
 		{
 			ausgabeString += " " + kontakt->getNachname1();
+		}
+	}
+
+	// Wenn Ausgabe nicht leer bzw. Angaben erkannt wurden
+	if (ausgabeString != "") 
+	{
+		// Setzen des Anrede im Ausgabestring
+		if (kontakt->getGeschlecht() == "Männlich")
+		{
+			ausgabeString = "Sehr geehrter" + ausgabeString;
+		}
+		else if (kontakt->getGeschlecht() == "Weiblich")
+		{
+			ausgabeString = "Sehr geehrte" + ausgabeString;
+		}
+		else
+		{
+			ausgabeString = "Sehr geehrte*r" + ausgabeString;
 		}
 	}
 

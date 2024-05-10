@@ -68,6 +68,11 @@ List<String^>^ DataClass::getTitel()
 	return listeTitel;
 }
 
+void DataClass::addTitel(System::String^ titel)
+{
+	listeTitel->Add(titel);
+}
+
 List<String^>^ DataClass::getPraefixe()
 {
 	return listePraefixe;

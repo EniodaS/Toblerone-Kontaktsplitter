@@ -7,7 +7,7 @@ private:
 
 	Parser^ parser;
 
-	DataClass^ dataClass; // TODO: useless?
+	DataClass^ dataClass; 
 
 	Kontakt^ kontakt = gcnew Kontakt();
 
@@ -22,6 +22,8 @@ public:
 	void update();
 
 	void save();
+
+	bool getValidity();
 
 	System::String^ getAusgabe();
 
