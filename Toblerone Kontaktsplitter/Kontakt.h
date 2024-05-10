@@ -11,8 +11,6 @@ private:
 	System::String^ vorname2;
 	System::String^ nachname1;
 	System::String^ nachname2;
-
-	// TODO: descr
 	bool valid;
 
 public:

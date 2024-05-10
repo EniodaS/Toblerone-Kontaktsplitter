@@ -152,7 +152,7 @@ Kontakt^ Parser::parseEingabe(String^ eingabeString)
 				else 
 				{
 					// Eingabe invalid, da Präfix zu keinem der zwei Nachnamen gehört
-					// -> Wort wird verworfen
+					// -> Erkannter Präfix wird verworfen
 					kontakt->setValid(false);
 					Debug::WriteLine(praefixItem + " recognized as praefix but two last names are set already, inputstring is invalid");
 				}
@@ -180,13 +180,13 @@ Kontakt^ Parser::parseEingabe(String^ eingabeString)
 					System::String^ name1 = wort->Substring(0, wort->IndexOf('-'));
 					System::String^ name2 = wort->Substring(wort->IndexOf('-') + 1);
 
-					// Wenn letztes Wort ein Präfix war, dann wird Nachname an Nachname1 angehängt
+					// Wenn letztes Wort ein Präfix war, dann wird Nachname an Nachname1 ANGEHÄNGT
 					if (wasLastMatchPraefix)
 					{
 						kontakt->addNachname1(name1);
 						Debug::WriteLine(name1 + " added to Nachname1");
 					}
-					// Sonst ist der Name Nachname1 und wird gesetzt
+					// Sonst ist der Name Nachname1 und wird GESETZT
 					else
 					{
 						kontakt->setNachname1(name1);
@@ -199,8 +199,8 @@ Kontakt^ Parser::parseEingabe(String^ eingabeString)
 					// Wenn zweiter Name einen Bindestrich enthält, dann ist der Name mehr als Doppelname
 					if (name2->IndexOf('-') != -1)
 					{
-						// Eingabe invalid, Multiname mit mehr als zwei Namen erkannt
-						// -> Erkannter Multi-Name wird als Nachname2 gesetzt
+						// Eingabe invalid, Multi-Name mit mehr als zwei Namen erkannt
+						// -> Multi-Name wird wie normaler Zweitname behandelt
 						kontakt->setValid(false);
 						Debug::WriteLine(name2 + " recognized as multiple last names with more than two, inputstring is invalid");
 					}
@@ -220,7 +220,7 @@ Kontakt^ Parser::parseEingabe(String^ eingabeString)
 						// Sonst muss Nachname zu Präfix in Nachname1 gehören
 						else
 						{
-							kontakt->setNachname1(kontakt->getNachname1() + " " + wort);
+							kontakt->addNachname1(wort);
 							Debug::WriteLine(wort + " added to Nachname1");
 						}
 					}
@@ -241,82 +241,91 @@ Kontakt^ Parser::parseEingabe(String^ eingabeString)
 			//		  (als letzter Name der Eingabe ohne Vornamen wird davon ausgegangen, dass es sich um den Nachnamen handelt)
 			else if (wasLastCommaSeparated || kontakt->getVorname1() == "" && wort != worte[worte->Count-1])
 			{
-				// Doppel-Vornamen-Check
+				// Wenn Wort ein Bindestrich enthält, dann ist es ein doppelter Vorname
 				if (wort->IndexOf('-') != -1)
 				{
+					// Trennen der Vornamen am ersten Bindestrich
 					System::String^ name1 = wort->Substring(0, wort->IndexOf('-'));
 					System::String^ name2 = wort->Substring(wort->IndexOf('-') + 1);
-
-					if (name2->IndexOf('-') != -1)
-					{
-						// Multi-Vornamen mit mehr als zwei Bezeichnungen erkannt, Eingabe ist invalid
-						// Multi-Nachname wird als mehrfacher zweiter Nachname behandelt
-						kontakt->setValid(false);
-						Debug::WriteLine(wort + " recognized as multiple first names with more than two, inputstring is invalid");
-					}
 
 					kontakt->setVorname1(name1);
 					kontakt->setVorname2(name2);
 					Debug::WriteLine(name1 + " set as Vorname1, " + name2 + " set as Vorname2");
+
+					if (name2->IndexOf('-') != -1)
+					{
+						// Eingabe invalid, Multiname mit mehr als zwei Namen erkannt
+						// -> Multi-Name wird wie normaler Zweitname behandelt
+						kontakt->setValid(false);
+						Debug::WriteLine(wort + " recognized as multiple first names with more than two, inputstring is invalid");
+					}
 				}
+				// Sonst ist der Name ein einzelner Vorname
 				else
 				{
 					kontakt->setVorname1(wort);
 					Debug::WriteLine(wort + " set as Vorname1");
 				}
-
+				
 				wasLastCommaSeparated = false;
 			}
-			// Es handelt sich um den Nachnamen, wenn:
-			//		Ein Vorname bereits gesetzt ist aber kein Nachname ORDER
-			//		Das letzte Wort war ein Präfix
+			// Es handelt sich um den Nachnamen, sofern:
+			//		- Ein Vorname bereits gesetzt ist aber kein Nachname ORDER
+			//		- Das letzte Wort war ein Präfix
 			else if (kontakt->getNachname1() == "" || wasLastMatchPraefix)
 			{
-				// Doppel-Nachnamen-Check
+				// Wenn Wort ein Bindestrich enthält, ist es ein doppelter Nachname
 				if (wort->IndexOf('-') != -1)
 				{
+					// Trennen der Nachnamen am ersten Bindestrich
 					System::String^ name1 = wort->Substring(0, wort->IndexOf('-'));
 					System::String^ name2 = wort->Substring(wort->IndexOf('-') + 1);
 
-					if (name2->IndexOf('-') != -1)
-					{
-						// Multi-Nachnamen mit mehr als zwei Bezeichnungen erkannt, Eingabe ist invalid
-						// Multi-Nachname wird als mehrfacher zweiter Nachname behandelt
-						kontakt->setValid(false);
-						Debug::WriteLine(name2 + " recognized as multiple last names with more than two, inputstring is invalid");
-					}
-
-					// Vorläufiger Präfix erkannt: erster Nachname wird angehängt statt gesetzt
+					// Wenn letztes Wort ein Präfix war, dann wird Nachname an Nachname1 ANGEHÄNGT
 					if (wasLastMatchPraefix)
 					{
-						kontakt->setNachname1(kontakt->getNachname1() + " " + name1);
-						Debug::WriteLine(name1 + " appended at Praefix of Nachname1");
+						kontakt->addNachname1(name1);
+						Debug::WriteLine(name1 + " added to Nachname1");
 					}
+					// Sonst ist der Name Nachname1 und wird GESETZT
 					else
 					{
 						kontakt->setNachname1(name1);
 						Debug::WriteLine(name1 + " set as Nachname1");
 					}
 
+					// Wenn zweiter Name einen Bindestrich enthält, dann ist der Name mehr als Doppelname
+					if (name2->IndexOf('-') != -1)
+					{
+						// Eingabe invalid, Multi-Name mit mehr als zwei Namen erkannt
+						// -> Multi-Name wird wie normaler Zweitname behandelt
+						kontakt->setValid(false);
+						Debug::WriteLine(name2 + " recognized as multiple last names with more than two, inputstring is invalid");
+					}
+
 					kontakt->setNachname2(name2);
 					Debug::WriteLine(name2 + " set as Nachname2");
 				}
+				// Sonst ist der Name ein einzelner Nachname
 				else
 				{
-					// Vorläufiger Präfix erkannt: Nachname wird ans zuletzt gesetzte Feld angehängt statt gesetzt
 					if (wasLastMatchPraefix)
 					{
+						// Wenn vorheriger Präfix erkannt wurde und Nachname2 nicht leer ist
+						// Dann muss Nachname zu Präfix in Nachname2 gehören
 						if (kontakt->getNachname2() != "")
 						{
-							kontakt->setNachname2(kontakt->getNachname2() + " " + wort);
-							Debug::WriteLine(wort + " appended at Praefix of Nachname2");
+							kontakt->addNachname2(wort);
+							Debug::WriteLine(wort + " added to Nachname2");
 						}
+						// Sonst muss Nachname zu Präfix in Nachname1 gehören
 						else
 						{
 							kontakt->setNachname1(kontakt->getNachname1() + " " + wort);
 							Debug::WriteLine(wort + " appended at Praefix of Nachname1");
 						}
 					}
+					// Sonst ist Nachname einzelner Nachname
 					else
 					{
 						kontakt->setNachname1(wort);
@@ -324,9 +333,11 @@ Kontakt^ Parser::parseEingabe(String^ eingabeString)
 					}
 				}
 			}
+			// Sonst kann der Name keinem Vor- oder Nachnamen zugeordnet werden
 			else
 			{
 				// Eingabestring ist invalid, da mehrere, nicht durch Bindestrich getrennte Namen gefunden wurden
+				// -> Unbekannter Name wird verworfen
 				kontakt->setValid(false);
 				Debug::WriteLine(wort + " recognized as name but first and last name are set already, no double name with '-'; inputstring is invalid");
 			}
@@ -336,7 +347,7 @@ Kontakt^ Parser::parseEingabe(String^ eingabeString)
 		}
 	}
 
-	// Wenn nach Parsen des Strings kein Geschlecht gesetzt wurde, ist als Geschlecht "X" anzugeben
+	// Wenn nach Parsen des Strings kein Geschlecht gesetzt wurde, wird als Geschlecht "X" gesetzt
 	if (kontakt->getGeschlecht() == "")
 	{
 		kontakt->setGeschlecht("X");
